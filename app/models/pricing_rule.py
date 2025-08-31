@@ -11,8 +11,8 @@ from app.db.database import Base
 class PricingRule(Base):
     __tablename__ = "pricing_rules"
 
-    id = Column(UUID(), primary_key=True, default=uuid.uuid4, index=True)
-    partner_id = Column(UUID(), ForeignKey("partners.id"))
+    id = Column(String(36), primary_key=True, default=lambda: str(uuid.uuid4()), index=True)
+    partner_id = Column(String(36), ForeignKey("partners.id"))
     rule_name = Column(String(255), nullable=False)
     rule_type = Column(String(50), nullable=False)  # 'percentage', 'fixed_amount', 'custom'
     rule_value = Column(DECIMAL(10, 4))  # percentage or fixed amount

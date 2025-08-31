@@ -10,8 +10,8 @@ from app.core.types import UUID
 class Partner(Base):
     __tablename__ = "partners"
 
-    id = Column(UUID(), primary_key=True, default=lambda: str(uuid.uuid4()), index=True)
-    user_id = Column(UUID(), ForeignKey("users.id"), nullable=False, index=True)  # Owner of this partner
+    id = Column(String(36), primary_key=True, default=lambda: str(uuid.uuid4()), index=True)
+    user_id = Column(String(36), ForeignKey("users.id"), nullable=False, index=True)  # Owner of this partner
     name = Column(String(255), nullable=False)
     type = Column(String(50), nullable=False)  # 'supplier', 'distributor', 'retailer', 'manufacturer', 'wholesaler'
     contact_email = Column(String(255))

@@ -10,8 +10,8 @@ from app.db.database import Base
 class Settlement(Base):
     __tablename__ = "settlements"
 
-    id = Column(UUID(), primary_key=True, default=uuid.uuid4, index=True)
-    partner_id = Column(UUID(), ForeignKey("partners.id", ondelete="CASCADE"), nullable=False)
+    id = Column(String(36), primary_key=True, default=lambda: str(uuid.uuid4()), index=True)
+    partner_id = Column(String(36), ForeignKey("partners.id", ondelete="CASCADE"), nullable=False)
     amount = Column(DECIMAL(12, 2), nullable=False)  # Settlement amount
     previous_debt = Column(DECIMAL(12, 2), nullable=False)  # Debt before settlement
     remaining_debt = Column(DECIMAL(12, 2), nullable=False)  # Debt after settlement

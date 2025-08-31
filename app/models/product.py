@@ -10,12 +10,12 @@ from app.core.types import UUID
 class Product(Base):
     __tablename__ = "products"
 
-    id = Column(UUID(), primary_key=True, default=uuid.uuid4, index=True)
+    id = Column(String(36), primary_key=True, default=lambda: str(uuid.uuid4()), index=True)
     name = Column(String(255), nullable=False)
     description = Column(Text)
     category = Column(String(255))
     brand = Column(String(255))
-    partner_id = Column(UUID(), ForeignKey("partners.id"))
+    partner_id = Column(String(36), ForeignKey("partners.id"))
     images = Column(JSON)  # Array of image URLs/paths
     is_active = Column(Boolean, default=True)
     created_at = Column(DateTime(timezone=True), server_default=func.now())

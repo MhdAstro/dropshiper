@@ -11,16 +11,16 @@ from app.db.database import Base
 sku_variant_association = Table(
     'sku_variants',
     Base.metadata,
-    Column('sku_id', UUID(), ForeignKey('sku.id', ondelete="CASCADE"), primary_key=True),
-    Column('variant_id', UUID(), ForeignKey('variants.id', ondelete="CASCADE"), primary_key=True)
+    Column('sku_id', String(36), ForeignKey('sku.id', ondelete="CASCADE"), primary_key=True),
+    Column('variant_id', String(36), ForeignKey('variants.id', ondelete="CASCADE"), primary_key=True)
 )
 
 
 class SKU(Base):
     __tablename__ = "sku"
 
-    id = Column(UUID(), primary_key=True, default=uuid.uuid4, index=True)
-    product_id = Column(UUID(), ForeignKey("products.id", ondelete="CASCADE"), nullable=False)
+    id = Column(String(36), primary_key=True, default=lambda: str(uuid.uuid4()), index=True)
+    product_id = Column(String(36), ForeignKey("products.id", ondelete="CASCADE"), nullable=False)
     sku_code = Column(String(255), unique=True, nullable=False)
     
     # New fields from requirements
