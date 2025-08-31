@@ -1,7 +1,5 @@
-from fastapi import FastAPI, Request
+from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.staticfiles import StaticFiles
-from fastapi.templating import Jinja2Templates
 from contextlib import asynccontextmanager
 from datetime import datetime
 import os
@@ -13,9 +11,15 @@ from app.db.init_db import init_db
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    # Initialize database
-    await init_db()
-    yield
+    try:
+        # Initialize database
+        print("Initializing database...")
+        await init_db()
+        print("Database initialized successfully")
+        yield
+    except Exception as e:
+        print(f"Database initialization failed: {e}")
+        raise
 
 
 app = FastAPI(
@@ -26,15 +30,10 @@ app = FastAPI(
     redoc_url="/redoc"
 )
 
-# Setup templates and static files
-templates = Jinja2Templates(directory="templates")
-app.mount("/static", StaticFiles(directory="static"), name="static")
-
 # Set up CORS middleware
-# Allow all origins for development
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # Allow all origins for development
+    allow_origins=["*"],  # Allow all origins
     allow_credentials=False,  # Can't use credentials with wildcard
     allow_methods=["*"],
     allow_headers=["*"],
@@ -44,9 +43,13 @@ app.include_router(api_router, prefix=settings.API_V1_STR)
 
 
 @app.get("/")
-async def root(request: Request):
-    """Serve the main HTML application"""
-    return templates.TemplateResponse("index.html", {"request": request})
+async def root():
+    """API root endpoint"""
+    return {
+        "message": "Dropshiper Backend API", 
+        "version": "1.0.0",
+        "docs": "/docs"
+    }
 
 
 @app.get("/health")
