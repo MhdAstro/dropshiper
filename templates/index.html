@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>سیستم مدیریت فروشگاه</title>
+    <link rel="stylesheet" href="/static/css/main.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css" rel="stylesheet">
+</head>
+<body>
+    <div id="app" class="min-h-screen relative overflow-hidden">
+        <!-- Animated Background -->
+        <div class="absolute inset-0">
+            <div class="absolute inset-0 bg-gradient"></div>
+            <div class="floating-circle circle-1"></div>
+            <div class="floating-circle circle-2"></div>
+            <div class="floating-circle circle-3"></div>
+            <div class="floating-circle circle-4"></div>
+        </div>
+
+        <!-- Loading Spinner -->
+        <div id="loading-spinner" class="loading-overlay">
+            <div class="spinner"></div>
+            <p class="loading-text">در حال بارگیری...</p>
+        </div>
+
+        <!-- Navigation -->
+        <nav class="navigation">
+            <div class="nav-container">
+                <h1 class="nav-title">سیستم مدیریت فروشگاه</h1>
+                <div class="nav-tabs">
+                    <button class="nav-tab active" data-tab="dashboard">داشبورد</button>
+                    <button class="nav-tab" data-tab="products">محصولات</button>
+                    <button class="nav-tab" data-tab="partners">پارتنرها</button>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <div class="container">
+                <!-- Dashboard Tab -->
+                <div id="dashboard-tab" class="tab-content active">
+                    <div class="dashboard-grid">
+                        <div class="stat-card">
+                            <h3>کل محصولات</h3>
+                            <p class="stat-number" id="total-products">0</p>
+                        </div>
+                        <div class="stat-card">
+                            <h3>کل سفارشات</h3>
+                            <p class="stat-number" id="total-orders">0</p>
+                        </div>
+                        <div class="stat-card">
+                            <h3>کل پارتنرها</h3>
+                            <p class="stat-number" id="total-partners">0</p>
+                        </div>
+                        <div class="stat-card">
+                            <h3>کل فروش</h3>
+                            <p class="stat-number" id="total-sales">0</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Products Tab -->
+                <div id="products-tab" class="tab-content">
+                    <div class="page-header">
+                        <h2>محصولات</h2>
+                        <button id="add-product-btn" class="btn-primary">افزودن محصول جدید</button>
+                    </div>
+                    <div id="products-grid" class="products-grid"></div>
+                </div>
+
+                <!-- Partners Tab -->
+                <div id="partners-tab" class="tab-content">
+                    <div class="page-header">
+                        <h2>پارتنرها</h2>
+                        <button id="add-partner-btn" class="btn-primary">افزودن پارتنر جدید</button>
+                    </div>
+                    <div id="partners-grid" class="partners-grid"></div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Product Modal -->
+    <div id="product-modal" class="modal-overlay">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="product-modal-title">افزودن محصول جدید</h3>
+                <button class="modal-close">&times;</button>
+            </div>
+            <form id="product-form" class="modal-body">
+                <div class="form-group">
+                    <label>نام محصول *</label>
+                    <input type="text" id="product-name" class="input-field" required>
+                </div>
+                <div class="form-group">
+                    <label>توضیحات</label>
+                    <textarea id="product-description" class="input-field" rows="3"></textarea>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>دسته‌بندی</label>
+                        <input type="text" id="product-category" class="input-field">
+                    </div>
+                    <div class="form-group">
+                        <label>برند</label>
+                        <input type="text" id="product-brand" class="input-field">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>پارتنر *</label>
+                    <select id="product-partner" class="input-field" required>
+                        <option value="">انتخاب پارتنر</option>
+                    </select>
+                </div>
+                
+                <!-- SKUs Section -->
+                <div class="form-section">
+                    <div class="section-header">
+                        <h4>SKU ها</h4>
+                        <button type="button" id="add-sku-btn" class="btn-secondary">افزودن SKU</button>
+                    </div>
+                    <div id="skus-container"></div>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn-secondary modal-cancel">لغو</button>
+                    <button type="submit" class="btn-primary">ذخیره</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Partner Modal -->
+    <div id="partner-modal" class="modal-overlay">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="partner-modal-title">افزودن پارتنر جدید</h3>
+                <button class="modal-close">&times;</button>
+            </div>
+            <form id="partner-form" class="modal-body">
+                <div class="form-group">
+                    <label>نام پارتنر *</label>
+                    <input type="text" id="partner-name" class="input-field" required>
+                </div>
+                <div class="form-group">
+                    <label>نوع پارتنر *</label>
+                    <select id="partner-type" class="input-field" required>
+                        <option value="supplier">تامین‌کننده</option>
+                        <option value="distributor">توزیع‌کننده</option>
+                        <option value="retailer">خرده‌فروش</option>
+                        <option value="manufacturer">تولیدکننده</option>
+                        <option value="wholesaler">عمده‌فروش</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>تلفن *</label>
+                    <input type="tel" id="partner-phone" class="input-field" required>
+                </div>
+                <div class="form-group">
+                    <label>آدرس</label>
+                    <textarea id="partner-address" class="input-field" rows="3"></textarea>
+                </div>
+                <div class="form-group">
+                    <label>توضیحات</label>
+                    <textarea id="partner-description" class="input-field" rows="2"></textarea>
+                </div>
+                
+                <!-- Pricing Configuration -->
+                <div class="form-section">
+                    <h4>تنظیمات قیمت‌گذاری</h4>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>درصد سود</label>
+                            <input type="number" id="partner-profit" class="input-field" min="0" step="0.1">
+                            <div class="price-text" id="profit-text"></div>
+                        </div>
+                        <div class="form-group">
+                            <label>مبلغ ثابت (تومان)</label>
+                            <input type="number" id="partner-fixed" class="input-field" min="0">
+                            <div class="price-text" id="fixed-text"></div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>رقم آخر قیمت (تومان)</label>
+                        <input type="number" id="partner-ending" class="input-field" min="0" step="1000">
+                        <div class="price-text" id="ending-text"></div>
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn-secondary modal-cancel">لغو</button>
+                    <button type="submit" class="btn-primary">ذخیره</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Partner Profile Modal -->
+    <div id="partner-profile-modal" class="modal-overlay">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>پروفایل پارتنر</h3>
+                <button class="modal-close">&times;</button>
+            </div>
+            <div class="modal-body" id="partner-profile-content">
+                <!-- Content will be populated by JavaScript -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Container -->
+    <div id="toast-container" class="toast-container"></div>
+
+    <script src="/static/js/utils.js"></script>
+    <script src="/static/js/api.js"></script>
+    <script src="/static/js/main.js"></script>
+</body>
+</html>
