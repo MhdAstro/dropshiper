@@ -10,9 +10,9 @@ from app.db.database import Base
 class Order(Base):
     __tablename__ = "orders"
 
-    id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4, index=True)
+    id = Column(String(36), primary_key=True, default=lambda: str(uuid.uuid4()), index=True)
     order_number = Column(String(255), unique=True, nullable=False)
-    platform_id = Column(UUID(as_uuid=True), ForeignKey("platforms.id"))
+    platform_id = Column(String(36), ForeignKey("platforms.id"))
     customer_info = Column(JSON)
     total_amount = Column(DECIMAL(10, 2))
     status = Column(String(50), default="pending")
@@ -27,9 +27,9 @@ class Order(Base):
 class OrderItem(Base):
     __tablename__ = "order_items"
 
-    id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4, index=True)
-    order_id = Column(UUID(as_uuid=True), ForeignKey("orders.id", ondelete="CASCADE"))
-    sku_id = Column(UUID(as_uuid=True), ForeignKey("sku.id"))
+    id = Column(String(36), primary_key=True, default=lambda: str(uuid.uuid4()), index=True)
+    order_id = Column(String(36), ForeignKey("orders.id", ondelete="CASCADE"))
+    sku_id = Column(String(36), ForeignKey("sku.id"))
     quantity = Column(Integer, nullable=False)
     unit_price = Column(DECIMAL(10, 2))
     total_price = Column(DECIMAL(10, 2))

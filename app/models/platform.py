@@ -9,7 +9,7 @@ from app.db.database import Base
 class Platform(Base):
     __tablename__ = "platforms"
 
-    id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4, index=True)
+    id = Column(String(36), primary_key=True, default=lambda: str(uuid.uuid4()), index=True)
     name = Column(String(255), nullable=False)
     type = Column(String(50), nullable=False)  # 'source', 'output'
     api_endpoint = Column(String(500))

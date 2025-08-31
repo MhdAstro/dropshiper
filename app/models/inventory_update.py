@@ -10,9 +10,9 @@ from app.db.database import Base
 class InventoryUpdate(Base):
     __tablename__ = "inventory_updates"
 
-    id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4, index=True)
-    sku_id = Column(UUID(as_uuid=True), ForeignKey("sku.id"))
-    source_platform_id = Column(UUID(as_uuid=True), ForeignKey("source_platforms.id"))
+    id = Column(String(36), primary_key=True, default=lambda: str(uuid.uuid4()), index=True)
+    sku_id = Column(String(36), ForeignKey("sku.id"))
+    source_platform_id = Column(String(36), ForeignKey("source_platforms.id"))
     old_quantity = Column(Integer)
     new_quantity = Column(Integer)
     update_type = Column(String(50))  # 'manual', 'automatic', 'order_placed'

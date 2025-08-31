@@ -10,9 +10,9 @@ from app.db.database import Base
 class SourcePlatform(Base):
     __tablename__ = "source_platforms"
 
-    id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4, index=True)
-    user_id = Column(UUID(as_uuid=True), ForeignKey("users.id"))
-    platform_id = Column(UUID(as_uuid=True), ForeignKey("platforms.id"))
+    id = Column(String(36), primary_key=True, default=lambda: str(uuid.uuid4()), index=True)
+    user_id = Column(String(36), ForeignKey("users.id"))
+    platform_id = Column(String(36), ForeignKey("platforms.id"))
     token = Column(String(500))
     refresh_token = Column(String(500))
     last_sync = Column(DateTime(timezone=True))

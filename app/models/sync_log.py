@@ -10,8 +10,8 @@ from app.db.database import Base
 class SyncLog(Base):
     __tablename__ = "sync_logs"
 
-    id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4, index=True)
-    platform_id = Column(UUID(as_uuid=True), ForeignKey("platforms.id"))
+    id = Column(String(36), primary_key=True, default=lambda: str(uuid.uuid4()), index=True)
+    platform_id = Column(String(36), ForeignKey("platforms.id"))
     sync_type = Column(String(50))  # 'inventory', 'price', 'product'
     status = Column(String(50))  # 'success', 'error', 'partial'
     records_processed = Column(Integer)

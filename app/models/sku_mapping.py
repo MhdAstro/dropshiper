@@ -10,9 +10,9 @@ from app.db.database import Base
 class SKUMapping(Base):
     __tablename__ = "sku_mapping"
 
-    id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4, index=True)
-    sku_id = Column(UUID(as_uuid=True), ForeignKey("sku.id", ondelete="CASCADE"))
-    platform_id = Column(UUID(as_uuid=True), ForeignKey("platforms.id"))
+    id = Column(String(36), primary_key=True, default=lambda: str(uuid.uuid4()), index=True)
+    sku_id = Column(String(36), ForeignKey("sku.id", ondelete="CASCADE"))
+    platform_id = Column(String(36), ForeignKey("platforms.id"))
     external_sku = Column(String(255))
     external_product_id = Column(String(255))
     price_multiplier = Column(DECIMAL(5, 2), default=1.0)
