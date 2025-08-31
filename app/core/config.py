@@ -17,7 +17,7 @@ class Settings(BaseSettings):
     FRONTEND_URL: str = "http://localhost:3000"
     
     # Database
-    DATABASE_URL: str = "postgresql://user:pass@localhost:5432/inventory_db"
+    DATABASE_URL: str = "postgresql://imp-psql-postgresql-ha.stage-monajjem.svc.cluster.local:5432/dropshiper_db"
     TEST_DATABASE_URL: str = "postgresql://user:pass@localhost:5432/inventory_test_db"
     
     # Redis
