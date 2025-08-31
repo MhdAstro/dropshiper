@@ -14,7 +14,7 @@ class Base(DeclarativeBase):
 raw_database_url = settings.DATABASE_URL
 if raw_database_url == "imp-psql-postgresql-ha.stage-monajjem.svc.cluster.local":
     # Use correct PostgreSQL credentials
-    database_url = "postgresql+asyncpg://postgres:ol1DnlOIlaNfLQGOvumcLJxRI8vr9Nv8@imp-psql-postgresql-ha.stage-monajjem.svc.cluster.local:5432/dropshiper_db"
+    database_url = "postgresql+asyncpg://postgres:ol1DnlOIlaNfLQGOvumcLJxRI8vr9Nv8@imp-psql-postgresql-ha.stage-monajjem.svc.cluster.local:5432/imp-psql"
 else:
     # Ensure async driver is specified
     if raw_database_url.startswith("postgresql://"):
